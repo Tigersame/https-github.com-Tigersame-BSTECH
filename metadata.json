@@ -1,8 +1,5 @@
 {
-  "requestFramePermissions": [
-    "camera",
-    "microphone"
-  ],
-  "name": "Getech",
-  "description": ""
+  "requestFramePermissions": [],
+  "name": "BSTECH",
+  "description": "The premier Clanker-powered token factory and DeFi hub on Base."
 }

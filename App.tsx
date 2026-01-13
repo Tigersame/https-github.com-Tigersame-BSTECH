@@ -1,13 +1,14 @@
 
-import React, { useState, useCallback } from 'react';
-import { SafeArea, useMiniKit, usePrimaryButton, useComposeCast } from '@coinbase/onchainkit/minikit';
+import React, { useState, useCallback, useMemo } from 'react';
+import { SafeArea, usePrimaryButton, useComposeCast } from '@coinbase/onchainkit/minikit';
 import { sdk } from '@farcaster/miniapp-sdk';
 import Navbar from './components/Navbar';
 import Launcher from './components/Launcher';
 import Swap from './components/Swap';
 import Earn from './components/Earn';
+import Marketing from './components/Marketing';
 import { TabType, TokenForm } from './types';
-import { Rocket, Repeat, TrendingUp, Zap } from 'lucide-react';
+import { Rocket, Repeat, TrendingUp, Megaphone } from 'lucide-react';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('launcher');
@@ -37,13 +38,16 @@ const App: React.FC = () => {
     setIsDeploying(true);
     (sdk.actions as any).haptics?.impact({ type: 'heavy' });
     
+    // Simulating deployment logic for the clanker-style launcher
     setTimeout(() => {
       setIsDeploying(false);
       (sdk.actions as any).haptics?.notification({ type: 'success' });
+      
       composeCast({
-        text: `🚀 Just launched ${launcherForm.name} ($${launcherForm.ticker}) on Base via @bstech!\n\nCheck it out! 🔵`,
+        text: `🚀 I just launched ${launcherForm.name} ($${launcherForm.ticker}) on Base via @bstech!\n\nThe next big meme is here. Check it out! 🔵`,
         embeds: [window.location.origin]
       });
+
       setLauncherForm({
         name: '',
         ticker: '',
@@ -51,56 +55,62 @@ const App: React.FC = () => {
         imageFile: null,
         initialBuy: '0.01',
       });
-    }, 2500);
+    }, 3000);
   }, [launcherForm, composeCast]);
 
-  const handlePrimaryAction = useCallback(() => {
+  const handleShareIdentity = useCallback(() => {
     (sdk.actions as any).haptics?.impact({ type: 'medium' });
-    
+    composeCast({
+      text: "🎨 Just generated a new Brand Kit for my project on Base using BSTECH Identity Studio! \n\nCheck out the AI-powered designer at @bstech. 🔵",
+      embeds: [window.location.origin]
+    });
+  }, [composeCast]);
+
+  const handlePrimaryAction = useCallback(() => {
     switch (activeTab) {
       case 'launcher':
-        if (showConfirm) {
+        if (!isVerified) {
+          (sdk.actions as any).haptics?.impact({ type: 'light' });
+          sdk.quickAuth.getToken().then(({ token }) => {
+            if (token) {
+              setIsVerified(true);
+              (sdk.actions as any).haptics?.notification({ type: 'success' });
+            }
+          });
+        } else if (showConfirm) {
           confirmDeployment();
         } else {
           setShowConfirm(true);
         }
         break;
-      case 'swap':
+      case 'market':
+        handleShareIdentity();
         break;
-      case 'earn':
+      default:
         break;
     }
-  }, [activeTab, showConfirm, confirmDeployment]);
+  }, [activeTab, isVerified, showConfirm, confirmDeployment, handleShareIdentity]);
 
-  const handleQuickAuth = useCallback(async () => {
-    try {
-      (sdk.actions as any).haptics?.impact({ type: 'light' });
-      const { token } = await sdk.quickAuth.getToken();
-      if (token) {
-        setIsVerified(true);
-        (sdk.actions as any).haptics?.notification({ type: 'success' });
-      }
-    } catch (e) {
-      console.error("Quick Auth failed", e);
-    }
-  }, []);
-
-  const isButtonEnabled = activeTab === 'launcher'
-    ? (!!launcherForm.name && !!launcherForm.ticker && isVerified)
-    : true;
-
-  const getPrimaryButtonText = () => {
+  const primaryButtonConfig = useMemo(() => {
+    // We only use the SDK Primary Button for Launcher and Market
+    // Swap and Earn use OnchainKit's built-in buttons for better UX
     if (activeTab === 'launcher') {
-      if (showConfirm) return 'CONFIRM DEPLOYMENT 🚀';
-      return isVerified ? 'LAUNCH TOKEN' : 'VERIFY AGENT';
+      const text = showConfirm ? 'CONFIRM DEPLOY' : (isVerified ? 'LAUNCH TOKEN' : 'VERIFY TO LAUNCH');
+      const disabled = isDeploying || (isVerified && (!launcherForm.name || !launcherForm.ticker));
+      return { text, disabled, hidden: false };
     }
-    if (activeTab === 'swap') return 'SWAP ON BASE';
-    return 'DEPOSIT FOR YIELD';
-  };
+    
+    if (activeTab === 'market') {
+      return { text: 'SHARE BRAND KIT', disabled: false, hidden: false };
+    }
+
+    return { text: '', disabled: true, hidden: true };
+  }, [activeTab, isVerified, showConfirm, launcherForm, isDeploying]);
 
   usePrimaryButton({ 
-    text: getPrimaryButtonText(), 
-    disabled: !isButtonEnabled || isDeploying
+    text: primaryButtonConfig.text, 
+    disabled: primaryButtonConfig.disabled,
+    hidden: primaryButtonConfig.hidden
   }, handlePrimaryAction);
 
   return (
@@ -115,7 +125,7 @@ const App: React.FC = () => {
                 form={launcherForm} 
                 setForm={setLauncherForm} 
                 isVerified={isVerified} 
-                onVerify={handleQuickAuth}
+                onVerify={() => {}} // Handled by primary button but logic is shared
                 showConfirm={showConfirm}
                 setShowConfirm={setShowConfirm}
                 isDeploying={isDeploying}
@@ -124,6 +134,7 @@ const App: React.FC = () => {
             )}
             {activeTab === 'swap' && <Swap />}
             {activeTab === 'earn' && <Earn />}
+            {activeTab === 'market' && <Marketing />}
           </main>
           
           <div className="fixed bottom-0 left-0 right-0 z-50">
@@ -132,7 +143,8 @@ const App: React.FC = () => {
                 {[
                   { id: 'launcher', icon: Rocket, label: 'Factory' },
                   { id: 'swap', icon: Repeat, label: 'Swap' },
-                  { id: 'earn', icon: TrendingUp, label: 'Treasury' }
+                  { id: 'earn', icon: TrendingUp, label: 'Earn' },
+                  { id: 'market', icon: Megaphone, label: 'Studio' }
                 ].map((tab) => (
                   <button
                     key={tab.id}

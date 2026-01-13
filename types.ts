@@ -1,5 +1,5 @@
 
-export type TabType = 'launcher' | 'swap' | 'earn';
+export type TabType = 'launcher' | 'swap' | 'earn' | 'market';
 
 export interface TokenForm {
   name: string;
