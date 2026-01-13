@@ -2,10 +2,12 @@
 import React, { type ReactNode, useState } from 'react';
 import { OnchainKitProvider } from '@coinbase/onchainkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { WagmiProvider } from 'wagmi/react';
+// Fix: Import WagmiProvider from @wagmi/react to bypass the name collision with local wagmi.ts file
+import { WagmiProvider } from '@wagmi/react';
 import { base } from 'viem/chains';
 import { getConfig } from './wagmi';
 
+// Explicitly defining the children prop in the component interface to satisfy type checking
 export function Providers({ children }: { children: ReactNode }) {
   const [config] = useState(() => getConfig());
   const [queryClient] = useState(() => new QueryClient());

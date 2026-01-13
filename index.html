@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,14 +9,14 @@
     <!-- Mandatory Farcaster Mini App Embed Metadata -->
     <meta name="fc:miniapp" content='{
       "version": "next",
-      "imageUrl": "https://picsum.photos/800/400?random=1",
+      "imageUrl": "https://bstech.vercel.app/hero.png",
       "button": {
         "title": "Launch BSTECH",
         "action": {
           "type": "launch_miniapp",
           "name": "BSTECH",
           "url": "https://bstech.vercel.app",
-          "splashImageUrl": "https://picsum.photos/400/400?random=2",
+          "splashImageUrl": "https://bstech.vercel.app/splash.png",
           "splashBackgroundColor": "#000000"
         }
       }
@@ -23,7 +24,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://esm.sh/@coinbase/onchainkit@2.0.0/styles.css" />
+    <link rel="stylesheet" href="https://esm.sh/@coinbase/onchainkit@1.1.0/styles.css" />
     
     <style>
       :root {
@@ -51,7 +52,14 @@
     </style>
 
     <script>
-      window.process = { env: { NODE_ENV: 'production' } };
+      // Shim process.env for the browser environment
+      window.process = { 
+        env: { 
+          NODE_ENV: 'production',
+          API_KEY: '' 
+        } 
+      };
+      
       tailwind.config = {
         theme: {
           extend: {
@@ -74,13 +82,13 @@
     "react/jsx-runtime": "https://esm.sh/react@18.3.1/jsx-runtime",
     "react-dom": "https://esm.sh/react-dom@18.3.1",
     "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
-    "@coinbase/onchainkit": "https://esm.sh/@coinbase/onchainkit@2.0.0?external=react,react-dom",
-    "@coinbase/onchainkit/minikit": "https://esm.sh/@coinbase/onchainkit@2.0.0/minikit?external=react,react-dom",
-    "@coinbase/onchainkit/wallet": "https://esm.sh/@coinbase/onchainkit@2.0.0/wallet?external=react,react-dom",
-    "@coinbase/onchainkit/identity": "https://esm.sh/@coinbase/onchainkit@2.0.0/identity?external=react,react-dom",
-    "@coinbase/onchainkit/earn": "https://esm.sh/@coinbase/onchainkit@2.0.0/earn?external=react,react-dom",
-    "@coinbase/onchainkit/swap": "https://esm.sh/@coinbase/onchainkit@2.0.0/swap?external=react,react-dom",
-    "@coinbase/onchainkit/connected": "https://esm.sh/@coinbase/onchainkit@2.0.0/connected?external=react,react-dom",
+    "@coinbase/onchainkit": "https://esm.sh/@coinbase/onchainkit@1.1.0?external=react,react-dom",
+    "@coinbase/onchainkit/minikit": "https://esm.sh/@coinbase/onchainkit@1.1.0/minikit?external=react,react-dom",
+    "@coinbase/onchainkit/wallet": "https://esm.sh/@coinbase/onchainkit@1.1.0/wallet?external=react,react-dom",
+    "@coinbase/onchainkit/identity": "https://esm.sh/@coinbase/onchainkit@1.1.0/identity?external=react,react-dom",
+    "@coinbase/onchainkit/earn": "https://esm.sh/@coinbase/onchainkit@1.1.0/earn?external=react,react-dom",
+    "@coinbase/onchainkit/swap": "https://esm.sh/@coinbase/onchainkit@1.1.0/swap?external=react,react-dom",
+    "@coinbase/onchainkit/connected": "https://esm.sh/@coinbase/onchainkit@1.1.0/connected?external=react,react-dom",
     "wagmi": "https://esm.sh/wagmi@2.12.0?external=react,react-dom",
     "wagmi/react": "https://esm.sh/wagmi@2.12.0/react?external=react,react-dom",
     "wagmi/connectors": "https://esm.sh/wagmi@2.12.0/connectors?external=react,react-dom",
@@ -93,14 +101,17 @@
     "@google/genai": "https://esm.sh/@google/genai@1.35.0",
     "react-dom/": "https://esm.sh/react-dom@18.3.1/",
     "react/": "https://esm.sh/react@18.3.1/",
-    "@coinbase/onchainkit/": "https://esm.sh/@coinbase/onchainkit@2.0.0/",
+    "@coinbase/onchainkit/": "https://esm.sh/@coinbase/onchainkit@1.1.0/",
     "viem/": "https://esm.sh/viem@2.21.0/",
-    "wagmi/": "https://esm.sh/wagmi@2.12.0/"
+    "wagmi/": "https://esm.sh/wagmi@2.12.0/",
+    "@wagmi/connectors": "https://esm.sh/@wagmi/connectors@^7.1.2"
   }
 }
 </script>
   </head>
   <body class="bg-black text-white antialiased overflow-hidden">
     <div id="root"></div>
+    <!-- Point to index.js which is produced by the build step in production -->
+    <script type="module" src="./index.js"></script>
   </body>
 </html>

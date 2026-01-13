@@ -1,7 +1,8 @@
 
+// Fix: Using @wagmi/core and @wagmi/connectors to avoid circular dependency with 'wagmi.ts' shadowing the 'wagmi' package
 import { createConfig, http } from '@wagmi/core';
 import { base, baseSepolia } from 'viem/chains';
-import { coinbaseWallet } from 'wagmi/connectors';
+import { coinbaseWallet } from '@wagmi/connectors';
 
 export function getConfig() {
   return createConfig({
@@ -9,7 +10,7 @@ export function getConfig() {
     connectors: [
       coinbaseWallet({
         appName: 'BSTECH',
-        preference: { options: 'smartWalletOnly' },
+        preference: 'smartWalletOnly',
       }),
     ],
     ssr: true,
@@ -20,7 +21,7 @@ export function getConfig() {
   });
 }
 
-declare module 'wagmi' {
+declare module '@wagmi/core' {
   interface Register {
     config: ReturnType<typeof getConfig>;
   }

@@ -1,29 +1,16 @@
+
 {
-  "name": "bstech",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "name": "bstech-miniapp",
+  "version": "1.0.0",
+  "description": "BSTECH Mini App on Base",
+  "main": "server.js",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "esbuild index.tsx --bundle --outfile=index.js --format=esm --jsx=automatic --minify --external:react --external:react-dom --external:wagmi --external:viem --external:lucide-react --external:@coinbase/onchainkit --external:@farcaster/miniapp-sdk --external:@google/genai --external:@tanstack/react-query",
+    "start": "node server.js"
   },
   "dependencies": {
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "@coinbase/onchainkit": "2.0.0",
-    "wagmi": "2.12.0",
-    "@wagmi/core": "2.13.0",
-    "viem": "2.21.0",
-    "@tanstack/react-query": "5.51.0",
-    "lucide-react": "0.460.0",
-    "@farcaster/miniapp-sdk": "0.0.0-20250123134106",
-    "@google/genai": "1.35.0"
-  },
-  "devDependencies": {
-    "@types/node": "^22.14.0",
-    "@vitejs/plugin-react": "^5.0.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "esbuild": "^0.24.0"
   }
 }

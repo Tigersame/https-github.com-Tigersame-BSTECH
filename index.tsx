@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
@@ -19,9 +20,8 @@ const Root = () => {
   }, []);
 
   return (
-    <Providers>
-      <App />
-    </Providers>
+    // Passing children as an explicit prop to resolve TypeScript error reporting missing children
+    <Providers children={<App />} />
   );
 };
 
