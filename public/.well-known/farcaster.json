@@ -1,0 +1,29 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjkxNTIsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHgwMmVmNzkwRGQ3OTkzQTM1ZkQ4NDdDMDUzRURkQUU5NDBEMDU1NTk2In0",
+    "payload": "eyJkb21haW4iOiJic3RlY2gudmVyY2VsLmFwcCJ9",
+    "signature": "MHgxMGQwZGU4ZGYwZDUwZTdmMGIxN2YxMTU2NDI1MjRmZTY0MTUyZGU4ZGU1MWU0MThiYjU4ZjVmZmQxYjRjNDBiNGVlZTRhNDcwNmVmNjhlMzQ0ZGQ5MDBkYmQyMmNlMmVlZGY5ZGQ0N2JlNWRmNzMwYzUxNjE4OWVjZDJjY2Y0MDFj"
+  },
+  "miniapp": {
+    "version": "1",
+    "name": "BSTECH",
+    "homeUrl": "https://bstech.vercel.app",
+    "iconUrl": "https://picsum.photos/1024/1024?random=100",
+    "splashImageUrl": "https://picsum.photos/200/200?random=101",
+    "splashBackgroundColor": "#000000",
+    "subtitle": "Launch, Swap, Earn on Base",
+    "description": "The fastest clanker-powered token launcher and DeFi hub on Base chain.",
+    "screenshotUrls": [
+      "https://picsum.photos/1284/2778?random=102",
+      "https://picsum.photos/1284/2778?random=103"
+    ],
+    "primaryCategory": "finance",
+    "tags": ["token", "launcher", "defi", "base"],
+    "heroImageUrl": "https://picsum.photos/1200/630?random=104",
+    "tagline": "Deploy instantly on Base",
+    "ogTitle": "BSTECH - Base Token Hub",
+    "ogDescription": "Launch and trade tokens with institutional grade yield on Base.",
+    "ogImageUrl": "https://picsum.photos/1200/630?random=105",
+    "noindex": false
+  }
+}
